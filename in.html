@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Registro diario de actividades (365 días)"
+    />
+    <meta name="keywords" content="registro, actividades, diario, 365 días" />
+    <meta name="author" content="Leonardo Bringas" />
+    <title>Registro 2026 de LeoBringasAtLife</title>
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@github/relative-time-element@latest/dist/bundle.js"
+    ></script>
+
+    <link rel="stylesheet" href="sty.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>2026</h1>
+        <p class="subtitle">Registro diario de actividades (365 días)</p>
+        <div class="time-elapsed">
+          <relative-time
+            datetime="2026-01-01T00:00:00Z"
+            format="elapsed"
+          ></relative-time>
+        </div>
+        <div id="countdown" class="countdown"></div>
+      </header>
+      <div class="graph-container">
+        <div class="graph-header">
+          <div class="graph-title">Registro diario de actividades</div>
+          <div class="legend">
+            <span>Menos</span>
+            <div class="legend-item" style="background: var(--level-0)"></div>
+            <div class="legend-item" style="background: var(--level-1)"></div>
+            <div class="legend-item" style="background: var(--level-2)"></div>
+            <div class="legend-item" style="background: var(--level-3)"></div>
+            <div class="legend-item" style="background: var(--level-4)"></div>
+            <span>Más</span>
+          </div>
+        </div>
+
+        <div class="contribution-graph">
+          <div class="graph-wrapper">
+            <div class="months" id="months"></div>
+            <div class="graph-grid" id="graph"></div>
+          </div>
+        </div>
+      </div>
+      <div class="history-container">
+        <h3>Historial de Actividades</h3>
+        <div id="activityHistory" class="activity-list">
+          <p class="no-activity">Aún no hay actividades registradas.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-date" id="modalDate"></div>
+          <div class="modal-day-info" id="modalDayInfo"></div>
+        </div>
+
+        <div class="intensity-selector">
+          <div class="intensity-options" id="intensityOptions">
+            <div class="intensity-option" data-level="0">Ninguna</div>
+            <div class="intensity-option" data-level="1">Poca</div>
+            <div class="intensity-option" data-level="2">Media</div>
+            <div class="intensity-option" data-level="3">Alta</div>
+            <div class="intensity-option" data-level="4">Máxima</div>
+          </div>
+        </div>
+
+        <textarea id="noteText" placeholder="¿Qué hiciste este día?"></textarea>
+
+        <div class="modal-actions">
+          <button onclick="closeModal()">Cancelar</button>
+          <button class="btn-primary" onclick="saveDay()">Guardar</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>
+        Visita mi
+        <a href="http://github.com/LeoBringasAtLife">GitHub</a>
+      </p>
+    </footer>
+    <script src="man.js"></script>
+  </body>
+</html>
