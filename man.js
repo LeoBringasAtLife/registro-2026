@@ -1,4 +1,3 @@
-// Constantes
 const STORAGE_KEY = 'year2026';
 const YEAR = 2026;
 const TOTAL_DAYS = 365;
@@ -24,11 +23,9 @@ const DATE_FORMAT_OPTIONS = {
   day: 'numeric'
 };
 
-// Data storage with localStorage
 let yearData = {};
 let currentEditingDate = null;
 
-// Utilidades
 function formatDate(date, options = DATE_FORMAT_OPTIONS) {
   return date.toLocaleDateString('es-ES', options);
 }
@@ -66,7 +63,6 @@ function loadFromStorage() {
   }
 }
 
-// Initialize App
 function initializeApp() {
   console.log('Cargando datos...');
   yearData = loadFromStorage();
@@ -77,9 +73,9 @@ function initializeApp() {
   setupEventListeners();
 }
 
-// Setup event listeners with delegation
+
 function setupEventListeners() {
-  // Intensity selector delegation
+
   const intensityOptions = document.getElementById('intensityOptions');
   if (intensityOptions) {
     intensityOptions.addEventListener('click', (e) => {
@@ -92,7 +88,6 @@ function setupEventListeners() {
     });
   }
 
-  // Modal close on outside click
   const modal = document.getElementById('modal');
   if (modal) {
     modal.addEventListener('click', (e) => {
@@ -102,7 +97,6 @@ function setupEventListeners() {
     });
   }
 
-  // Calendar event delegation
   const graph = document.getElementById('graph');
   if (graph) {
     graph.addEventListener('click', (e) => {
@@ -113,7 +107,6 @@ function setupEventListeners() {
   }
 }
 
-// Generate calendar
 function generateCalendar() {
   const graph = document.getElementById('graph');
   const monthsContainer = document.getElementById('months');
@@ -126,7 +119,6 @@ function generateCalendar() {
   graph.innerHTML = '';
   monthsContainer.innerHTML = '';
 
-  // Agregar etiquetas de días
   DAY_LABELS.forEach((label) => {
     const dayLabel = document.createElement('div');
     dayLabel.className = 'day-label';
@@ -134,7 +126,6 @@ function generateCalendar() {
     graph.appendChild(dayLabel);
   });
 
-  // Generar días y meses en una sola iteración
   let currentMonth = -1;
   const monthPositions = [];
 
@@ -146,13 +137,11 @@ function generateCalendar() {
       day
     ).padStart(2, '0')}`;
 
-    // Registrar cambios de mes
     if (month !== currentMonth) {
       currentMonth = month;
       monthPositions.push({ month, position: graph.children.length });
     }
 
-    // Crear elemento del día
     const dayElement = document.createElement('div');
     dayElement.className = 'day';
     dayElement.dataset.date = dateStr;
@@ -162,7 +151,6 @@ function generateCalendar() {
     graph.appendChild(dayElement);
   }
 
-  // Agregar etiquetas de meses
   monthPositions.forEach(({ month }) => {
     const label = document.createElement('div');
     label.className = 'month-label';
@@ -185,11 +173,9 @@ function openModal(dateStr) {
     'modalDayInfo'
   ).textContent = `Día ${dayOfYear} de ${TOTAL_DAYS}`;
 
-  // Cargar datos existentes
   const data = yearData[dateStr] || { level: 0, note: '' };
   document.getElementById('noteText').value = data.note || '';
 
-  // Establecer selección de intensidad
   document.querySelectorAll('.intensity-option').forEach((opt) => {
     opt.classList.remove('selected');
     if (parseInt(opt.dataset.level) === parseInt(data.level)) {
@@ -212,16 +198,13 @@ function saveDay() {
     document.querySelector('.intensity-option.selected')?.dataset.level || 0;
   const note = document.getElementById('noteText').value;
 
-  // Validar datos antes de guardar
   const dayData = validateDayData(level, note);
 
-  // Guardar en localStorage
   yearData[currentEditingDate] = dayData;
   if (!saveToStorage(yearData)) {
-    return; // Si falla el guardado, no continuar
+    return;
   }
 
-  // Actualizar visual
   const dayElement = document.querySelector(
     `[data-date="${currentEditingDate}"]`
   );
@@ -248,18 +231,16 @@ function renderHistory() {
   if (entries.length === 0) {
     const noActivityMsg = document.createElement('p');
     noActivityMsg.className = 'no-activity';
-    noActivityMsg.textContent = 'Aún no hay actividades registradas.';
+    noActivityMsg.textContent = 'No hay actividades registradas.';
     historyContainer.appendChild(noActivityMsg);
     return;
   }
 
   entries.forEach(([dateStr, data]) => {
-    // Parsear fecha manualmente para evitar problemas de zona horaria
     const [year, month, day] = dateStr.split('-').map(Number);
     const date = new Date(year, month - 1, day);
     const formattedDate = formatDate(date);
 
-    // Crear elemento de actividad de forma segura
     const item = document.createElement('div');
     item.className = 'activity-item';
 
@@ -300,31 +281,26 @@ function updateCountdown() {
   const countdownEl = document.getElementById('countdown');
   if (!countdownEl) return;
 
-  // Obtener fecha actual en UTC-3 (Argentina)
   const now = new Date();
   const utc = now.getTime() + now.getTimezoneOffset() * 60000;
   const argentinaTime = new Date(utc - 3 * 60 * 60 * 1000);
-
-  // Fin del año 2026 a las 23:59:59
+  
   const endOfYear = new Date(YEAR, 11, 31, 23, 59, 59);
-
-  // Calcular diferencia en milisegundos
   const diff = endOfYear - argentinaTime;
-
-  // Convertir a días
   const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
 
   if (days > 1) {
     countdownEl.textContent = `Faltan ${days} días para finalizar el año`;
   } else if (days === 1) {
-    countdownEl.textContent = '¡Mañana es el último día del año!';
+    countdownEl.textContent = `¡Mañana es el último ${days} del año!`;
   } else if (days === 0) {
-    countdownEl.textContent = '¡Hoy es el último día del año!';
+    countdownEl.textContent = `¡Hoy es el último ${days} del año!`;
   } else {
-    countdownEl.textContent = '¡Feliz año nuevo!';
+    countdownEl.textContent = `¡Feliz Año Nuevo! 2027`;
   }
 }
 
-// Initialize
-console.log('Iniciando aplicación...');
+console.log('¡Funciona!');
 initializeApp();
+
+// Transfer it to a database (Firebase), so that it is easier to maintain and can be accessed from anywhere (computer or phone).
